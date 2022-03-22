@@ -14,6 +14,12 @@ func InitRouters()  {
 	r.Use(middleware.Cors())
 	r.Use(gin.Recovery())
 
+	r.LoadHTMLGlob("static/admin/index.html")
+	r.Static("admin/static","static/admin/static")
+	r.StaticFile("admin/favicon.ico","static/admin/static/favicon.ico")
+	r.GET("admin", func(c *gin.Context) {
+		c.HTML(200,"index.html",nil)
+	})
 
 	Auth:=r.Group("api/v1")//需要鉴权的操作
 	Auth.Use(middleware.JwtToken())
