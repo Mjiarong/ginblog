@@ -11,6 +11,7 @@ func InitRouters()  {
 	gin.SetMode(utils.AppMod)
 	r:=gin.New()
 	r.Use(middleware.Logger())
+	r.Use(middleware.Cors())
 	r.Use(gin.Recovery())
 
 
@@ -35,9 +36,13 @@ func InitRouters()  {
 
 	routerV1:=r.Group("api/v1")
 	{
+		routerV1.GET("user/:id",v1.GetUserInfo)
 		routerV1.GET("users",v1.GetUsers)
+		routerV1.GET("users/search",v1.SearchUser)
 		routerV1.POST("user/add",v1.AddUser)//新增注册用户
 		routerV1.GET("category",v1.GetCategory)
+		routerV1.GET("category/:id",v1.GetCateInfo)
+		routerV1.GET("article/search",v1.SearchArt)
 		routerV1.GET("article",v1.GetArticle)////查询文章列表
 		routerV1.GET("article/:id",v1.GetArtInfo)//获取单个文章
 		routerV1.GET("article/list/:id",v1.GetCateArt)//查询单个分类下的文章

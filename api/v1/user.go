@@ -40,18 +40,53 @@ func AddUser(c *gin.Context)  {
 
 }
 
-//查询单个用户
+// GetUserInfo 查询单个用户
+func GetUserInfo(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	var maps = make(map[string]interface{})
+	data, code := model.GetUser(id)
+	maps["username"] = data.Username
+	maps["role"] = data.Role
+	c.JSON(
+		http.StatusOK, gin.H{
+			"status":  code,
+			"data":    maps,
+			"total":   1,
+			"message": errmsg.GetErrMsg(code),
+		},
+	)
 
+}
+
+//搜索用户
+func SearchUser(c *gin.Context)  {
+	pageSize, _ := strconv.Atoi(c.Query("pagesize"))
+	pageNum, _ := strconv.Atoi(c.Query("pagenum"))
+	username := c.Query("username")
+
+	data, total := model.SearchUser(username, pageSize, pageNum)
+	code := errmsg.SUCCESS
+	c.JSON(
+		http.StatusOK, gin.H{
+			"status":  code,
+			"data":    data,
+			"total":   total,
+			"message": errmsg.GetErrMsg(code),
+		},
+	)
+
+}
 
 //查询用户列表
 func GetUsers(c *gin.Context)  {
 	pageSize,_:=strconv.Atoi(c.Query("pagesize"))
 	pageNum,_:=strconv.Atoi(c.Query("pagenum"))
-	data:=model.GetUsers(pageSize,pageNum)
+	data, total :=model.GetUsers(pageSize,pageNum)
 	code = errmsg.SUCCESS
 	c.JSON(http.StatusOK,gin.H{
 		"status":code,
 		"data":data,
+		"total":total,
 		"message":errmsg.GetErrMsg(code),
 	})
 }
@@ -62,7 +97,7 @@ func EditUser(c *gin.Context)  {
 	id,_:=strconv.Atoi(c.Param("id"))
 	c.ShouldBindJSON(&data)
 	if code=model.CheckUserByID(id);code==errmsg.SUCCESS{
-		model.EditUser(id,&data)
+		code=model.EditUser(id,&data)
 	}
 	c.JSON(http.StatusOK,gin.H{
 		"status":code,

@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"ginblog/utils/errmsg"
 	"gorm.io/gorm"
 )
@@ -34,9 +35,28 @@ func GetArtInfo(id int) (Article,int) {
 	return art,errmsg.SUCCESS
 }
 
+//搜索文章
+func SearchArt(title string, pageSize int, pageNum int) ([]Article, int, int64) {
+	var articleList []Article
+	var  total int64
+	err = db.Select("article.id,title, img, article.created_at, article.updated_at, `desc`, Category.name").Order("id Asc").Joins("Category").Where("title LIKE ?",
+		title+"%",
+	).Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&articleList).Error
+	//单独计数
+	db.Model(&articleList).Where("title LIKE ?",
+		title+"%",
+	).Count(&total)
+	fmt.Println(total)
+	if err != nil {
+		return nil, errmsg.ERROR,0
+	}
+	return articleList, errmsg.SUCCESS,total
+}
+
 //查询分类下所有文章
-func GetCateArt(cid int,pageSize int,pageNum int) ([]Article,int){
+func GetCateArt(cid int,pageSize int,pageNum int) ([]Article,int, int64){
 	var cateArt []Article
+	var total int64
 	//var category []Category
 	switch {
 	case pageSize >= 100:
@@ -55,24 +75,28 @@ func GetCateArt(cid int,pageSize int,pageNum int) ([]Article,int){
 	}*/
 
 
-	err=db.Preload("Category").Limit(pageSize).Offset((pageNum-1)*pageSize).Where("cid=?",cid).Take(&cateArt).Error
+	err=db.Preload("Category").Limit(pageSize).Offset((pageNum-1)*pageSize).Where("cid=?",cid).Find(&cateArt).Error
+	db.Model(&cateArt).Where("cid =?", cid).Count(&total)
 	if err!=nil{
-		return  cateArt,errmsg.ERROR_ARTICLE_OF_CATE_NOT_EXIST
+		return  cateArt,errmsg.ERROR_ARTICLE_OF_CATE_NOT_EXIST,0
 	}
-	return cateArt,errmsg.SUCCESS
+
+	return cateArt,errmsg.SUCCESS,total
 }
 
 
 //查询文章列表
-func GetArticle(pageSize int,pageNum int) ([]Article,int) {
+func GetArticle(pageSize int,pageNum int) ([]Article,int, int64) {
 	var art []Article
+	var total int64
 	if pageSize==0{pageSize=-1}//Cancel limit condition with -1
 	//if pageNum==0{pageNum=-1}//Cancel offset condition with -1
 	err=db.Preload("Category").Limit(pageSize).Offset((pageNum-1)*pageSize).Find(&art).Error
+	db.Model(&art).Count(&total)
 	if err!=nil&&err!=gorm.ErrRecordNotFound{
-		return  nil,errmsg.ERROR
+		return  nil,errmsg.ERROR,0
 	}
-	return art,errmsg.SUCCESS
+	return art,errmsg.SUCCESS,total
 }
 
 //编辑文章

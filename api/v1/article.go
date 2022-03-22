@@ -20,15 +20,34 @@ func AddArticle(c *gin.Context)  {
 	})
 }
 
+//搜索文章
+func SearchArt(c *gin.Context)  {
+	pageSize, _ := strconv.Atoi(c.Query("pagesize"))
+	pageNum, _ := strconv.Atoi(c.Query("pagenum"))
+	title := c.Query("title")
+
+	data, code ,total := model.SearchArt(title, pageSize, pageNum)
+	c.JSON(
+		http.StatusOK, gin.H{
+			"status":  code,
+			"data":    data,
+			"total":   total,
+			"message": errmsg.GetErrMsg(code),
+		},
+	)
+
+}
+
 //查询单个分类下的文章
 func GetCateArt(c *gin.Context)  {
 	pageSize,_:=strconv.Atoi(c.Query("pagesize"))
 	pageNum,_:=strconv.Atoi(c.Query("pagenum"))
 	id,_:=strconv.Atoi(c.Param("id"))
-	data,code:=model.GetCateArt(id,pageSize,pageNum)
+	data,code, total:=model.GetCateArt(id,pageSize,pageNum)
 	c.JSON(http.StatusOK,gin.H{
 		"status":code,
 		"data":data,
+		"total":total,
 		"message":errmsg.GetErrMsg(code),
 	})
 }
@@ -48,10 +67,11 @@ func GetArtInfo(c *gin.Context)  {
 func GetArticle(c *gin.Context)  {
 	pageSize,_:=strconv.Atoi(c.Query("pagesize"))
 	pageNum,_:=strconv.Atoi(c.Query("pagenum"))
-	data,code:=model.GetArticle(pageSize,pageNum)
+	data,code, total:=model.GetArticle(pageSize,pageNum)
 	c.JSON(http.StatusOK,gin.H{
 		"status":code,
 		"data":data,
+		"total":total,
 		"message":errmsg.GetErrMsg(code),
 	})
 }
