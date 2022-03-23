@@ -25,7 +25,7 @@ func InitDb(){
 		fmt.Println("连接数据库失败",err)
 	}
 
-	db.AutoMigrate(&User{},&Category{},&Article{})
+	db.AutoMigrate(&User{},&Category{},&Article{},&Profile{})
 	// 获取通用数据库对象 sql.DB ，然后使用其提供的功能
 	sqlDB, err := db.DB()
 	if err != nil {

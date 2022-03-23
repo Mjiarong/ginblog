@@ -38,6 +38,8 @@ func InitRouters()  {
 		Auth.DELETE("article/:id",v1.DeleteArticle)
 		//上传文件
 		Auth.POST("upload",v1.UpLoad)
+		// 更新个人设置
+		Auth.PUT("profile/:id", v1.UpdateProfile)
 	}
 
 	routerV1:=r.Group("api/v1")
@@ -53,6 +55,8 @@ func InitRouters()  {
 		routerV1.GET("article/:id",v1.GetArtInfo)//获取单个文章
 		routerV1.GET("article/list/:id",v1.GetCateArt)//查询单个分类下的文章
 		routerV1.POST("login",v1.Login)
+		// 获取个人设置信息
+		routerV1.GET("profile/:id", v1.GetProfile)
 	}
 
 	r.Run(utils.HttpPort)
