@@ -28,6 +28,15 @@ func GetProfile(id int) (Profile, int) {
 	return profile, errmsg.SUCCESS
 }
 
+func GetProfileByName(name string) (Profile, int) {
+	var profile Profile
+	err = db.Where("name = ?", name).First(&profile).Error
+	if err != nil {
+		return profile, errmsg.ERROR
+	}
+	return profile, errmsg.SUCCESS
+}
+
 // UpdateProfile 更新个人信息设置
 func UpdateProfile(id int, data *Profile) int {
 	var profile Profile

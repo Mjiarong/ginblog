@@ -142,7 +142,7 @@ func EncPassword(password string)string{
 	return fpw
 }
 
-//登录验证
+//后台登录验证
 func CheckLogin(username string,password string) int {
 	var info User
 	db.Where("username=?",username).First(&info)
@@ -156,4 +156,16 @@ func CheckLogin(username string,password string) int {
 		return errmsg.ERROR_USER_NO_PERMISSION
 	}
 	return errmsg.SUCCESS
+}
+
+func CheckLoginFront(username string,password string) (User, int)  {
+	var info User
+	db.Where("username=?",username).First(&info)
+	if info.ID==0{
+		return info,errmsg.ERROR_USERNAME_NOT_EXIST
+	}
+	if EncPassword(password) != info.Password{
+		return info,errmsg.ERROR_PASSWORD_WRONG
+	}
+	return info,errmsg.SUCCESS
 }

@@ -4,21 +4,34 @@ import (
 	v1 "ginblog/api/v1"
 	"ginblog/middleware"
 	"ginblog/utils"
+	"github.com/gin-contrib/multitemplate"
 	"github.com/gin-gonic/gin"
 )
+
+
+func createMyRender() multitemplate.Renderer {
+	p := multitemplate.NewRenderer()
+	p.AddFromFiles("admin", "static/admin/index.html")
+	p.AddFromFiles("front", "static/front/dist/index.html")
+	return p
+}
 
 func InitRouters()  {
 	gin.SetMode(utils.AppMod)
 	r:=gin.New()
+	r.HTMLRender = createMyRender()
 	r.Use(middleware.Logger())
 	r.Use(middleware.Cors())
 	r.Use(gin.Recovery())
 
-	r.LoadHTMLGlob("static/admin/index.html")
-	r.Static("admin/static","static/admin/static")
-	r.StaticFile("admin/favicon.ico","static/admin/static/favicon.ico")
-	r.GET("admin", func(c *gin.Context) {
-		c.HTML(200,"index.html",nil)
+	r.Static("/admin","./static/admin")
+	r.Static("/static", "./static/front/dist/static")
+
+	r.GET("/", func(c *gin.Context) {
+		c.HTML(200, "front", nil)
+	})
+	r.GET("/admin", func(c *gin.Context) {
+		c.HTML(200, "admin", nil)
 	})
 
 	Auth:=r.Group("api/v1")//需要鉴权的操作
@@ -55,8 +68,11 @@ func InitRouters()  {
 		routerV1.GET("article/:id",v1.GetArtInfo)//获取单个文章
 		routerV1.GET("article/list/:id",v1.GetCateArt)//查询单个分类下的文章
 		routerV1.POST("login",v1.Login)
+		routerV1.POST("loginfront", v1.LoginFront)
 		// 获取个人设置信息
 		routerV1.GET("profile/:id", v1.GetProfile)
+		routerV1.GET("profile/name/:username", v1.GetProfileByName)
+
 	}
 
 	r.Run(utils.HttpPort)

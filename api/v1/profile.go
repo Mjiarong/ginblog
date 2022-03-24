@@ -18,6 +18,16 @@ func GetProfile(c *gin.Context)  {
 	})
 }
 
+func GetProfileByName(c *gin.Context)  {
+	username := c.Param("username")
+	data, code := model.GetProfileByName(username)
+	c.JSON(http.StatusOK, gin.H{
+		"status":  code,
+		"data":    data,
+		"message": errmsg.GetErrMsg(code),
+	})
+}
+
 func UpdateProfile(c *gin.Context) {
 	var data model.Profile
 	id, _ := strconv.Atoi(c.Param("id"))
