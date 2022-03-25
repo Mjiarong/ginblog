@@ -157,15 +157,15 @@ http://localhost:3000/admin
 ## 项目预览
 
 - 前端展示页面
-  ![](https://gitee.com/wejectchan/ginblog/raw/master/upload/front1.png)
+  ![](https://github.com/Mjiarong/ginblog/blob/main/upload/front1.png)
 
 - 前端展示页面
-  ![](https://gitee.com/wejectchan/ginblog/raw/master/upload/front2.png)
+  ![](https://github.com/Mjiarong/ginblog/blob/main/upload/front2.png)
 
 - 后台登录页面
 
-  ![](https://gitee.com/wejectchan/ginblog/raw/master/upload/admin.jpg)
+  ![](https://github.com/Mjiarong/ginblog/blob/main/upload/admin1.png)
 
 - 后台管理页面
 
-  ![](https://gitee.com/wejectchan/ginblog/raw/master/upload/admin2.jpg)
+  ![](https://github.com/Mjiarong/ginblog/blob/main/upload/admin2.png)
