@@ -41,12 +41,12 @@ gin+vue 全栈制作一个博客。
 ### 后端源码
 储存于仓库:github.com:Mjiarong/ginWeb.git
 ```shell
-ginWeb // 前端开发源码（VUECLI项目源文件)
-  ├─admin  
-  ├─front  
+ginWeb // 前端开发源码
+  ├─admin  // 后台管理页面      
+  ├─front  // 前端展示页面  
   ├─README.md  
   └─LICENSE
-
+```
 
 
 
