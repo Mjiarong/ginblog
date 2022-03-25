@@ -157,7 +157,7 @@ http://localhost:3000/admin
 ## 项目预览
 
 - 前端展示页面
-  ![](https://github.com/Mjiarong/ginblog/blob/main/upload/front1.png)
+  ![](https://github.com/Mjiarong/ginblog/blob/main/upload/front1.jpg)
 
 - 前端展示页面
   ![](https://github.com/Mjiarong/ginblog/blob/main/upload/front2.png)
