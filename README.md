@@ -1,38 +1,12 @@
 # ginblog
 基于gin框架的博客
 
-# Ginblog（项目已完成，欢迎使用)
-
-[![star](https://gitee.com/wejectchan/ginblog/badge/star.svg?theme=white)](https://gitee.com/wejectchan/ginblog/stargazers)
-
-## 重要更新
-
-- 2021.3.7 修改了文章阅读页面css样式。
-
-- 2021.3.2 修改静态资源托管路径，前端项目下直接打包，不用再移动到static目录下，更加方便。
-
-- 2021.2.12 为了交流方便，建立了一个QQ群：951736723，如果有问题，欢迎进群交流。
-
-- 2021.2.10 增加了展示页面的移动端适配
-  
-  <img src="https://gitee.com/wejectchan/ginblog/raw/master/upload/mobile.png" width="250px" />
-  
-  <img src="https://gitee.com/wejectchan/ginblog/raw/master/upload/mobile2.png"  width="250px" />
-  
-  
-  
-- 2021.1.2 加入注册、登录、评论功能，后台管理加入评论审核功能
-
-- 2021.1.3 增加 登录、注册验证功能；增加评论数量显示；增加阅读数量显示
-         增加：文章页面评论数、阅读数
-
 ## 介绍
 
 gin+vue 全栈制作一个博客。
 
-这是一个分享全栈制作过程的项目，旨在为有兴趣接触 golang web 开发的朋友分享一些制作经验。
-
-你可以前往 [B 站(https://space.bilibili.com/402177130)](https://space.bilibili.com/402177130) 观看全栈的制作过程，你也可以留言分享你的观点，非常乐意与你交流。
+这是一个参照教程制作的全栈项目，仅作为学习交流。
+制作过程全程参考[B 站(https://space.bilibili.com/402177130)](https://space.bilibili.com/402177130) ，感谢原作者的无私奉献。
 
 
 
