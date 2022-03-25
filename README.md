@@ -11,7 +11,7 @@ gin+vue 全栈制作一个博客。
 
 
 ## 目录结构
-# 后端源码
+### 后端源码
 ```shell
 ├─  .gitignore
 │  go.mod // 项目依赖
@@ -38,8 +38,9 @@ gin+vue 全栈制作一个博客。
    ├─errmsg   
    └─validator         
 ```
-# 后端源码
+### 后端源码
 储存于仓库:github.com:Mjiarong/ginWeb.git
+```shell
 ginWeb // 前端开发源码（VUECLI项目源文件)
   ├─admin  
   ├─front  
