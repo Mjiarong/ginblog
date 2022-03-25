@@ -39,7 +39,7 @@ gin+vue 全栈制作一个博客。
    └─validator         
 ```
 ### 后端源码
-储存于仓库:https://github.com:Mjiarong/ginWeb
+储存于仓库:https://github.com/Mjiarong/ginWeb
 ```shell
 ginWeb // 前端开发源码
   ├─admin  // 后台管理页面      
