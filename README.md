@@ -174,4 +174,108 @@ http://localhost:3000/admin
 ##  Docker部署
 
 ### 一、如何安装docker
+以ubuntu 18.04 LTS为例
 https://blog.csdn.net/liangcsdn111/article/details/115405223
+
+### 二、拉取镜像和创建镜像和容器编排
+### Mysql服务器的镜像
+```shell
+#首先确定mysql是否能被搜素到，这步可以跳过，也可以在dockerhub.com中搜索
+$ docker search mysql
+
+#拉取镜像
+docker pull mysql  #这里默认是拉取的最新版本，如果需要特定版本可以在镜像后面添加tag，具体版本信息可以在dockerhub.com查询
+
+#特定版本拉取,比如要拉取8.0.22(版本号一定要是官方放出的版本号，否则是查找不到的)
+docker pull mysql:8.0.22
+
+#这时可以查看下拉取的镜像
+docker images
+
+#运行镜像
+docker run -d -p 3306:3306 -v /my/own/datadir:/var/lib/mysql --name ginblog-mysql -e MYSQL_ROOT_PASSWORD=admin123  mysql
+
+# -d 表示后台运行，并返回容器id
+# -p 3006:3306 表示端口映射，具体为 -p 主机端口：容器端口
+# --name 给容器取个名字
+# -e MYSQL_ROOT_PASSWORD=password 给mysql root管理员设置密码
+# -v /my/own/datadir:/var/lib/mysql 添加数据卷/my/own/datadir是主机的数据库路径 /var/lib/mysql是容器中的数据库路径，这一步非常重要
+
+#进入容器配置
+docker exec -it ginblog-mysql bash
+
+root@ed9345077e02:/# mysql -u root -p
+Enter password:
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.22 MySQL Community Server - GPL
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql>
+
+# 之后就和一般情况下mysql的操作一样了。
+```
+
+
+
+### 制作ginblog项目镜像
+
+- 首相要拉取我们的ginblog项目
+
+```shell
+# 新建一个项目文件夹，在你认为任何适合的地方都可以
+
+$ cd /
+$ mkdir app
+
+# 我们这里利用git来远程同步
+
+$ git clone 项目地址
+```
+
+- 编写Dockerfile
+
+```dockerfile
+FROM golang:latest
+RUN go env -w GO111MODULE=on
+RUN go env -w GOPROXY=https://goproxy.cn,https://goproxy.io,direct
+
+WORKDIR $GOPATH/src/ginblog
+COPY . $GOPATH/src/ginblog
+
+RUN go build .
+
+EXPOSE 3000
+
+ENTRYPOINT ["./ginblog"]
+```
+
+- 配置ginblog的config
+
+```ini
+# config/config.ini
+
+# DbHost = ginblog-mysql 是为了后面容器互通做准备，对应的是mysql容器的name
+
+Db = mysql
+DbHost = ginblog-mysql 
+DbPort = 3306
+DbUser = ginblog
+DbPassWord = admin123
+DbName = ginblog
+```
+
+### 生成镜像
+
+最后一步，就是生成我们的ginblog docker image了，这部很简单，运行下列命令
+
+```shell
+$ docker build -t ginblog .
+$ docker run -d -p 3000:3000 --name ginblog ginblog
+
+#这样访问服务器IP:3000 就可以访问网站了
+```
