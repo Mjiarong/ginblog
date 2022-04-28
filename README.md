@@ -169,3 +169,9 @@ http://localhost:3000/admin
 - 后台管理页面
 
   ![](https://github.com/Mjiarong/ginblog/blob/main/upload/admin2.png)
+  
+
+##  Docker部署
+
+### 一、如何安装docker
+
